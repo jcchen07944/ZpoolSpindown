@@ -32,22 +32,22 @@ while [ "$index" -lt "$drives_count" ] ; do
 	let "index = $index + 1"
 done
 
-:'
+
 # Check if some disks spinning
-index=0
-while [ "$index" -lt "$drives_count" ] ; do
-	spundown=`smartctl -n standby -H /dev/${drives[$index]} | tail -1 | grep "STANDBY" | wc -l | awk '{print $NF}'`
-	if [ $spundown -eq 0 ] ; then
-		break
-	fi
-	let "index = $index + 1"
-done
-if [ "$index" -eq "$drives_count" ] ; then
-	echo "No disks spinning, wait for 10 minutes...."
-	sleep 10m
-	continue
-fi
-'
+# index=0
+# while [ "$index" -lt "$drives_count" ] ; do
+	# spundown=`smartctl -n standby -H /dev/${drives[$index]} | tail -1 | grep "STANDBY" | wc -l | awk '{print $NF}'`
+	# if [ $spundown -eq 0 ] ; then
+		# break
+	# fi
+	# let "index = $index + 1"
+# done
+# if [ "$index" -eq "$drives_count" ] ; then
+	# echo "No disks spinning, wait for 10 minutes...."
+	# sleep 10m
+	# continue
+# fi
+
 
 # ZPool I/O activity check
 zpool iostat $ZPOOL 300 2 | tail -1 > /tmp/zpool.iostat
