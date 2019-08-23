@@ -65,8 +65,11 @@ fi
 # Spin down
 index=0
 while [ "$index" -lt "$drives_count" ] ; do
-	camcontrol standby ${drives[$index]}
-	printf "Spindown Drive %s\n" ${drives[$index]}
+	spundown=`smartctl -n standby -H /dev/${drives[$index]} | tail -1 | grep "STANDBY" | wc -l | awk '{print $NF}'`
+	if [ $spundown -eq 1 ] ; then
+		camcontrol standby ${drives[$index]}
+		printf "Spindown Drive %s\n" ${drives[$index]}
+	fi
 	let "index = $index + 1"
 done
 
